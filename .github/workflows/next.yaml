@@ -1,0 +1,60 @@
+name: next
+'on':
+  push:
+    branches:
+    - next-*
+
+jobs:
+  setup:
+    runs-on: [ self-hosted, runner-controller ]
+    outputs:
+      runner_name: ${{ steps.start_runner.outputs.runner_name }}
+    steps:
+    - id: start_runner
+      env:
+        WORKER_TYPE: base
+      run: start-runner
+
+  main:
+    needs: [ setup ]
+    runs-on: ${{ needs.setup.outputs.runner_name }}
+    env:
+      BUILDAH_FORMAT: docker
+      BUILD_TYPE: docker
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - id: flags
+      name: setup flags
+      env:
+        COMMIT_MSG: ${{ github.event.head_commit.message }}
+      run: |
+        msgContains() {
+          # XX/tpl: empty strings are false-y, non-empty strings are true-y.
+          echo "$COMMIT_MSG" | head -n 1 | grep -q "$1" && echo true || echo ""
+        }
+        echo no_build=$(msgContains '#no_build') >> $GITHUB_OUTPUT
+        echo d2p=$(msgContains '#deploy-to-prod') >> $GITHUB_OUTPUT
+        echo next=$(msgContains '#next') >> $GITHUB_OUTPUT
+
+        # XX/tpl: why not using msgContains? do not risk any boolean coercion vs nullable due to blank string
+        echo "SKIP_ABI_TEST=$(echo "$COMMIT_MSG" | grep -q '#skip-abi-test' && echo true || echo false)" >> $GITHUB_ENV
+
+    - name: build image
+      if: ${{ !steps.flags.outputs.no_build }}
+      run: buildctl image
+
+    - name: deploy image (prod)
+      if: ${{ steps.flags.outputs.d2p && steps.flags.outputs.next }}
+      run: buildctl deploy prod
+
+  teardown:
+    needs: [ setup, main ]
+    if: always()
+    runs-on: [ self-hosted, runner-controller ]
+    steps:
+    - name: teardown runner
+      run: stop-runner ${{ needs.setup.outputs.runner_name }}

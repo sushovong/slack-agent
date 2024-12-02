@@ -1,0 +1,61 @@
+name: 'main'
+'on':
+  push:
+    branches: [ main ]
+
+jobs:
+  setup:
+    runs-on: [ self-hosted, runner-controller ]
+    outputs:
+      runner_name: ${{ steps.start_runner.outputs.runner_name }}
+    steps:
+    - id: start_runner
+      env:
+        WORKER_TYPE: base
+      run: start-runner
+
+  main:
+    needs: [ setup ]
+    runs-on: ${{ needs.setup.outputs.runner_name }}
+    env:
+      BUILDAH_FORMAT: docker
+      BUILD_TYPE: docker
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - id: flags
+      name: setup flags
+      env:
+        COMMIT_MSG: ${{ github.event.head_commit.message }}
+      run: |
+        msgContains() {
+          # XX/tpl: empty strings are false-y, non-empty strings are true-y.
+          echo "$COMMIT_MSG" | head -n 1 | grep -q "$1" && echo true || echo ""
+        }
+        echo d2p=$(msgContains '#deploy-to-prod') >> $GITHUB_OUTPUT
+        echo no_build=$(msgContains '#no_build') >> $GITHUB_OUTPUT
+        echo canary=$(msgContains '#canary') >> $GITHUB_OUTPUT
+
+    - name: build image
+      if: ${{ !steps.flags.outputs.no_build }}
+      env:
+        BUILDCTL_DEBUG: 'true'
+      run: buildctl image
+
+    - name: deploy image
+      run: buildctl deploy dev
+
+    - name: deploy image (prod)
+      if: ${{ steps.flags.outputs.d2p }}
+      run: buildctl deploy prod
+
+  teardown:
+    needs: [ setup, main ]
+    if: always()
+    runs-on: [ self-hosted, runner-controller ]
+    steps:
+    - name: teardown runner
+      run: stop-runner ${{ needs.setup.outputs.runner_name }}

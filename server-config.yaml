@@ -1,0 +1,12 @@
+project: blank-project-docker
+version: '1.0'
+
+server:
+  applicationConnectors:
+  - type: http
+    port: 80
+
+kubernetes:
+  cpus: 0.1
+  mem: 64
+  healthcheck: "none"

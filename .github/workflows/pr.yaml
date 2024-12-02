@@ -1,0 +1,56 @@
+name: pr
+'on':
+  pull_request:
+    branches:
+    - '**'
+
+jobs:
+  setup:
+    runs-on: [ self-hosted, runner-controller ]
+    outputs:
+      runner_name: ${{ steps.start_runner.outputs.runner_name }}
+    steps:
+    - id: start_runner
+      env:
+        WORKER_TYPE: base
+      run: start-runner
+
+  main:
+    needs: [ setup ]
+    runs-on: ${{ needs.setup.outputs.runner_name }}
+    env:
+      BUILDAH_FORMAT: docker
+      BUILD_TYPE: docker
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - id: flags
+      name: setup flags
+      run: |
+        # XX/tpl: this should be after actions/checkout for git to work
+        # XX/tpl: nothing on a GHA "pr" event gives us the latest commit message,
+        # XX/tpl: so we have to construct it ourselves from git history.
+        COMMIT_MSG="$(git log --format=%B -1 ${{ github.event.pull_request.head.sha }})"
+        msgContains() {
+            # XX/tpl: empty strings are false-y, non-empty strings are true-y.
+            echo "$COMMIT_MSG" | head -n 1 | grep -q "$1" && echo true || echo ""
+        }
+        echo no_build=$(msgContains '#no_build') >> $GITHUB_OUTPUT
+
+        # XX/tpl: why not using msgContains? do not risk any boolean coercion vs nullable due to blank string
+        echo "SKIP_ABI_TEST=$(echo "$COMMIT_MSG" | grep -q '#skip-abi-test' && echo true || echo false)" >> $GITHUB_ENV
+
+    - name: build image
+      if: ${{ !steps.flags.outputs.no_build }}
+      run: buildctl image
+
+  teardown:
+    needs: [ setup, main ]
+    if: always()
+    runs-on: [ self-hosted, runner-controller ]
+    steps:
+    - name: teardown runner
+      run: stop-runner ${{ needs.setup.outputs.runner_name }}
