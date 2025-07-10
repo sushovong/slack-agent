@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+slack_agent.egg-info/PKG-INFO
+slack_agent.egg-info/SOURCES.txt
+slack_agent.egg-info/dependency_links.txt
+slack_agent.egg-info/requires.txt
+slack_agent.egg-info/top_level.txt

@@ -33,14 +33,12 @@ jobs:
         COMMIT_MSG: ${{ github.event.head_commit.message }}
       run: |
         msgContains() {
-          # XX/tpl: empty strings are false-y, non-empty strings are true-y.
           echo "$COMMIT_MSG" | head -n 1 | grep -q "$1" && echo true || echo ""
         }
         echo no_build=$(msgContains '#no_build') >> $GITHUB_OUTPUT
         echo d2p=$(msgContains '#deploy-to-prod') >> $GITHUB_OUTPUT
         echo next=$(msgContains '#next') >> $GITHUB_OUTPUT
 
-        # XX/tpl: why not using msgContains? do not risk any boolean coercion vs nullable due to blank string
         echo "SKIP_ABI_TEST=$(echo "$COMMIT_MSG" | grep -q '#skip-abi-test' && echo true || echo false)" >> $GITHUB_ENV
 
     - name: build image

@@ -32,7 +32,6 @@ jobs:
         COMMIT_MSG: ${{ github.event.head_commit.message }}
       run: |
         msgContains() {
-          # XX/tpl: empty strings are false-y, non-empty strings are true-y.
           echo "$COMMIT_MSG" | head -n 1 | grep -q "$1" && echo true || echo ""
         }
         echo d2p=$(msgContains '#deploy-to-prod') >> $GITHUB_OUTPUT

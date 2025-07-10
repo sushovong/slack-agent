@@ -1,0 +1,188 @@
+## Overview
+
+This is a Prometheus configuration file (`prometheus-config.yaml`) for monitoring a service called "preorder-service" in a production environment. The configuration defines various alert rules that trigger when certain metrics exceed thresholds.
+
+## Alert Categories
+
+The file defines several categories of alerts:
+
+### 1. Performance Alerts
+
+- **APILatencyDegradation**: Triggers when the p90 latency for non-food paths exceeds 1 second for 5 minutes with at least 20 requests per minute.
+- **ResponseTimeDegradation**: Similar to above but specifically for the "/food" path with a higher threshold of 2 seconds.
+- **PodAPILatencyDegradation**: Monitors latency at the pod level instead of the service level.
+- **JettyActiveRequestSpike**: Alerts when active Jetty requests exceed 2 for more than a minute, suggesting potential blocking calls.
+
+### 2. Error Rate Alerts
+
+- **APIErrors5xxRunningLongTime**: Triggers when 5xx errors are between 2-20% of total requests for 5 minutes.
+- **APIErrors5xxHighErrorRate**: Alerts when 5xx errors exceed 20% of requests for 1 minute.
+- **ResourceHighNumbersOf5XXAlert**: Pod-specific alert for resources with >25% of 5xx errors.
+- **ResourceHighNumbersOf4XXAlertExceptUpdateCart**: Alerts on high 4xx error rates (>25%) for most resources, excluding cart update operations.
+- **UpdateCartResourceHighNumbersOf4XXAlert**: Specifically monitors 4xx errors (excluding 409 errors) for cart update operations.
+- **UpdateCartResourceHighNumbersOf409Alert**: Alerts when 409 (conflict) errors exceed 50% for cart update operations.
+
+### 3. Resource Utilization Alerts
+
+- **PodMemUtilAlert**: Triggers when a pod's memory usage exceeds 80% of its limit.
+- **JvmMemoryFillingUpAlert**: Alerts when JVM heap memory exceeds 95% usage.
+- **BlockedThreadsSpike**: Detects when the number of blocked JVM threads exceeds 50.
+- **FDSpike**: Monitors for sudden increases in file descriptor usage (>90,000 in 5 minutes).
+- **CPRedisMemoryHigherThan75**: Alerts when Redis memory usage exceeds 75%.
+- **CPRedisCPUUtilHigherThan75**: Triggers when Redis CPU usage exceeds 75%.
+
+### 4. Dependency Alerts
+
+- **HttpDependencyHighLatency**: Alerts when p99 latency to dependent services exceeds 1 second.
+- **OrchestratorServiceHighLatency**: Specifically monitors latency to the orchestrator service.
+- **CPRedisLatencyHigherThan1ms**: Triggers when Redis command latency exceeds 1ms.
+
+### 5. Functional Alerts
+
+- **HighNullSearchAlert**: Detects when more than 10% of searches return null results.
+- **EmptyMyListContentSourceAlert**: Alerts when the MyList content source returns empty results more than 20 times in 5 minutes.
+- **NullSearchSpikeAlert**: Monitors for sudden changes in the rate of null search results.
+
+
+## Overview
+
+This Prometheus configuration file is for monitoring the "orderflow-gateway-service" in a production environment. Like the previous configuration, it defines alert rules, but it also includes many recording rules that pre-compute frequently used metrics.
+
+## Alert Categories
+
+### 1. Performance Alerts
+- **APILatencyDegradation**: Triggers when p90 latency exceeds 5 seconds for 5 minutes.
+- **TokenRefreshFilterHighLatency**: Monitors latency in token refresh operations, alerting when p99 latency exceeds 2 seconds for 10 minutes.
+- **HttpDependencyHighLatency**: Alerts when p99 latency to dependent services exceeds 5 seconds with at least 10 requests per minute.
+- **HttpDependencyHighLatencyV2**: A warning-level alert for p99 latency exceeding 8 seconds to dependent services for 5 minutes.
+
+### 2. Error Rate Alerts
+- **APIErrors5xxRunningLongTime**: Alerts when 5xx errors are between 2-20% of total requests for 15 minutes.
+- **APIErrors5xxHighErrorRate**: Triggers when 5xx errors exceed 20% of requests for 5 minutes, excluding "UnknownResource".
+- **ResourceHighNumbersOf5XXAlert**: Alerts when resources have more than 25% of 5xx errors for a 15-minute period.
+
+### 3. Resource Utilization Alerts
+- **PodMemUtilAlert**: Triggers when more than 30% of pods have memory usage exceeding 80% of their limit.
+- **JvmMemoryFillingUpAlert**: Alerts when JVM heap memory exceeds 80% usage.
+
+## Recording Rules
+
+This configuration contains an extensive set of recording rules, which are pre-computed metrics that can improve query performance and simplify dashboard creation. These rules fall into several categories:
+
+### 1. Basic Traffic Metrics
+- Records total request counts at various time intervals (1m, 5m, 15m)
+- Tracks error counts (5xx responses) at the same intervals
+
+### 2. Latency Percentiles
+- Calculates p50, p90, p95, and p99 latency values for overall service
+
+### 3. Latency Distribution
+- Records request counts in various latency buckets (0.01s, 0.05s, 0.1s, 0.5s, 1s, 2s, 5s, Inf)
+- These enable detailed analysis of request distribution across latency ranges
+
+### 4. Resource-Specific Metrics
+- Records latency percentiles broken down by resource
+- Further segments these by application flavor
+
+### 5. Dependency Metrics
+- Tracks dependency call latencies and error rates by target service
+- Records p99 latency for each dependent service
+
+### 6. Miscellaneous
+- Records request counts by HTTP status code
+- Tracks metrics by application flavor
+- Monitors error rates for specific components
+
+## Key Differences from Previous Configuration
+
+1. **More recording rules**: This configuration heavily emphasizes pre-computing metrics.
+2. **Application flavor awareness**: Many metrics are broken down by "app_flavour", suggesting this service handles multiple application types.
+3. **Higher latency thresholds**: The latency thresholds (5s for p90) are higher than the previous service (1-2s).
+4. **Pod-level memory alert approach**: Instead of alerting on individual pods, it alerts when a percentage of all pods exceed a threshold.
+5. **Token refresh monitoring**: Has specific monitoring for token refresh operations.
+
+This configuration shows a mature monitoring setup with both reactive alerts and proactive recording rules to support detailed analysis and visualization of service performance.
+
+
+
+## Overview
+
+This configuration file is for monitoring the "postorderflow-gateway-service" in a production environment. It's very similar to the previous orderflow-gateway-service configuration, suggesting these are companion services with similar monitoring requirements.
+
+## Alert Categories
+
+### 1. Performance Alerts
+- **APILatencyDegradation**: Triggers when p90 latency exceeds 5 seconds for 5 minutes.
+- **TokenRefreshFilterHighLatency**: Alerts when p99 latency of token refresh operations exceeds 2 seconds for 10 minutes.
+- **HttpDependencyHighLatency**: Monitors p99 latency to dependent services, alerting when it exceeds 5 seconds with at least 10 requests per minute.
+
+### 2. Error Rate Alerts
+- **APIErrors5xxRunningLongTime**: Triggers when 5xx errors are between 2-20% of total requests for 15 minutes.
+- **APIErrors5xxHighErrorRate**: Alerts when 5xx errors exceed 20% of requests for 5 minutes.
+- **ResourceHighNumbersOf5XXAlert**: Alerts when resources have more than 25% of 5xx errors for a 15-minute period.
+
+### 3. Resource Utilization Alerts
+- **PodMemUtilAlert**: Triggers when more than 30% of pods have memory usage exceeding 80% of their limit.
+
+## Recording Rules
+
+Like the previous configuration, this one includes numerous recording rules for pre-computing metrics:
+
+### 1. Traffic Metrics
+- Records total request counts at various time intervals (1m, 5m, 15m)
+- Tracks error counts (5xx responses) at the same intervals
+
+### 2. Latency Percentiles
+- Calculates p50, p95, and p99 latency values for overall service performance
+
+### 3. Latency Distribution
+- Records request counts in various latency buckets (0.01s, 0.05s, 0.1s, 0.5s, 1s, 2s, 5s, Inf)
+
+### 4. Application Flavor Metrics
+- Records request counts and error rates by application flavor
+
+### 5. Dependency Metrics
+- Tracks dependency call latencies and error rates by target service
+- Records p99 latency for each dependent service
+
+## Comparison to Previous Configurations
+
+1. **Almost identical to orderflow-gateway-service**: This configuration is nearly a clone of the orderflow-gateway-service configuration, with just the service name changed. This suggests they are parallel services with similar characteristics but handling different parts of the order workflow (pre-order vs. post-order).
+
+2. **Fewer alerts than preorder-service**: Compared to the first configuration we saw (preorder-service), this has fewer specialized alerts and no JVM-specific monitoring.
+
+3. **Standardized approach**: The similarity between the orderflow and postorderflow configurations indicates a standardized monitoring approach for gateway services.
+
+4. **Focus on dependencies**: Like the other gateway service, this configuration emphasizes monitoring dependencies, reflecting the gateway's role in routing requests to other services.
+
+The nearly identical nature of the orderflow and postorderflow gateway configurations suggests they're part of a microservices architecture where similar services are monitored in similar ways, with standardized alert thresholds and recording rules.
+
+
+I'll explain the different types of queries in this Prometheus alert configuration file for the preorderflow-gateway-service.
+
+## Alert Rules
+
+1. **APILatencyDegradation**: Monitors when the 90th percentile (P90) of API latency exceeds 3 seconds for 5 minutes straight, excluding search endpoints. This helps detect when the API is running slowly.
+
+2. **APIErrors5xxRunningLongTime**: Triggers when 5xx errors are occurring at a rate between 2-20% for 15 minutes. This catches moderate but persistent error rates.
+
+3. **APIErrors5xxHighErrorRate**: Fires when 5xx errors exceed 20% for any API endpoint for 5 minutes. This detects severe error spikes.
+
+4. **PodMemUtilAlert**: Alerts when more than 30% of pods have memory utilization above 80% for 5 minutes, indicating potential memory pressure.
+
+5. **SearchAPILatencyDegradation**: Specifically monitors search endpoints, triggering when P90 latency exceeds 2 seconds for 5 minutes.
+
+6. **SearchAPILatencyDegradationForAppflavour**: Similar to the above but monitors by app flavor with a 3-second threshold.
+
+7. **JvmMemoryFillingUpAlert**: Alerts when JVM heap memory usage exceeds 95% for 2 minutes, warning of potential memory issues.
+
+8. **ResourceHighNumbersOf5XXAlert**: Triggers when any resource has 25% or more 5xx errors over 15 minutes.
+
+9. **TokenRefreshFilterHighLatency**: Alerts when the 99th percentile (P99) of token refresh latency exceeds 2 seconds for 10 minutes.
+
+10. **HttpDependencyHighLatency**: Monitors calls to external dependencies, triggering when P99 latency exceeds 3 seconds for 5 minutes.
+
+11. **UnifiedSearchResourceHighNumbersOf5XXAlert**: Specifically monitors unified search resources, alerting when 5xx errors exceed 5%.
+
+12. **(Commented out) UnifiedSearchResourceHighResponseSize**: Would have monitored for large response sizes from search endpoints.
+
