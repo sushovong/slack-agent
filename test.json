@@ -1,0 +1,379 @@
+{
+    "token": "rqdRDmYzuLAI1vLnMo2vKxIa",
+    "team_id": "T0ZHVRG3B",
+    "api_app_id": "A08GXMCRYSG",
+    "event": {
+      "user": "U026V7XSYCE",
+      "type": "app_mention",
+      "ts": "1741946694.471699",
+      "client_msg_id": "7140713c-69e8-42be-910f-b71360844347",
+      "text": "<@U08H63WGNF5>  Fyi 4xx error\n<https://tools.udaan.dev/tracer/trace/a6389b53b86098bdfd6ed1ddc04ed09f>\n*Alert:* ResourceHighNumbersOf4XXAlertExceptUpdateCart\n*Description:* resolved at Mar 13, 12:06 AM\n*Details:*\n• *severity:* `error`\n• *cluster:* `udaan-sin2`\n• *originNamespace:* `prod`\n• *service:* `preorder-service`\n• *pod:* `preorder-service-d8656656c-m9bbf`\n• *service_slug:* `preorder-service`\n• *resource:* `ContentResource.getContentsForScreen`\n• *prometheus:* `monitoring/udaan-misc-prod`\n• *slack_channel:* `outage-alerts`\n• *status_code:* `5`\n• *tenant_id:* `sin2`\n• *trigger_route:* `alerting-service`\n",
+      "team": "T0ZHVRG3B",
+      "blocks": [
+        {
+          "type": "rich_text",
+          "block_id": "FhCdg",
+          "elements": [
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "user",
+                  "user_id": "U08H63WGNF5"
+                },
+                {
+                  "type": "text",
+                  "text": "  Fyi 4xx error\n"
+                },
+                {
+                  "type": "link",
+                  "url": "https://tools.udaan.dev/tracer/trace/a6389b53b86098bdfd6ed1ddc04ed09f"
+                },
+                {
+                  "type": "text",
+                  "text": "\n"
+                },
+                {
+                  "type": "text",
+                  "text": "Alert: ",
+                  "style": {
+                    "bold": true
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "ResourceHighNumbersOf4XXAlertExceptUpdateCart\n"
+                },
+                {
+                  "type": "text",
+                  "text": "Description: ",
+                  "style": {
+                    "bold": true
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "resolved at Mar 13, 12:06 AM\n"
+                },
+                {
+                  "type": "text",
+                  "text": "Details:",
+                  "style": {
+                    "bold": true
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": "\n"
+                }
+              ]
+            },
+            {
+              "type": "rich_text_list",
+              "elements": [
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "severity:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "error",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "cluster:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "udaan-sin2",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "originNamespace:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "prod",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "service:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "preorder-service",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "pod:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "preorder-service-d8656656c-m9bbf",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "service_slug:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "preorder-service",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "resource:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "ContentResource.getContentsForScreen",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "prometheus:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "monitoring/udaan-misc-prod",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "slack_channel:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "outage-alerts",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "status_code:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "5",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "tenant_id:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "sin2",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "trigger_route:",
+                      "style": {
+                        "bold": true
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "text": "alerting-service",
+                      "style": {
+                        "code": true
+                      }
+                    }
+                  ]
+                }
+              ],
+              "style": "bullet",
+              "indent": 0,
+              "border": 0
+            },
+            {
+              "type": "rich_text_section",
+              "elements": []
+            }
+          ]
+        }
+      ],
+      "channel": "C08GXPAN78W",
+      "event_ts": "1741946694.471699"
+    },
+    "type": "event_callback",
+    "event_id": "Ev08HV84QHHS",
+    "event_time": 1741946694,
+    "authorizations": [
+      {
+        "enterprise_id": null,
+        "team_id": "T0ZHVRG3B",
+        "user_id": "U08H63WGNF5",
+        "is_bot": true,
+        "is_enterprise_install": false
+      }
+    ],
+    "is_ext_shared_channel": false,
+    "event_context": "4-eyJldCI6ImFwcF9tZW50aW9uIiwidGlkIjoiVDBaSFZSRzNCIiwiYWlkIjoiQTA4R1hNQ1JZU0ciLCJjaWQiOiJDMDhHWFBBTjc4VyJ9"
+  }
