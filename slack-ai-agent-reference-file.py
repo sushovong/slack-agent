@@ -54,7 +54,7 @@ REFERENCE CONTENT:
                     "properties": {
                         "service_name": {
                             "type": "string",
-                            "description": "Name of the backend service for which to construct the latency report",
+                            "description": "Name of the backend service for which to construct thelatency report",
                         }
                     },
                     "required": ["service_name"],
