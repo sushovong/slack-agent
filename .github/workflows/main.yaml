@@ -44,9 +44,6 @@ jobs:
         BUILDCTL_DEBUG: 'true'
       run: buildctl image
 
-    - name: deploy image
-      run: buildctl deploy dev
-
     - name: deploy image (prod)
       if: ${{ steps.flags.outputs.d2p }}
       run: buildctl deploy prod
