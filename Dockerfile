@@ -7,7 +7,7 @@ ADD . /app
 WORKDIR /app
 RUN uv sync --frozen
 
-CMD ["uv", "run", "slack-agent/slack-ai-agent-reference-file.py"]
+CMD  ["uv", "run", "slack-ai-agent-reference-file.py"]
 
 
 
