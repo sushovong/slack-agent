@@ -8,5 +8,5 @@ server:
 
 kubernetes:
   cpus: 0.1
-  mem: 64
+  mem: 256
   healthcheck: "none"
