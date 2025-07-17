@@ -249,8 +249,12 @@ def refresh_reference():
 
 @app.route("/slack/events", methods=["POST"])
 def slack_events():
+    app.logger.info(f"Received request to /slack/events")
+    app.logger.info(f"Request headers: {dict(request.headers)}")
+    
     # Get the JSON data from the request
     data = request.json
+    app.logger.info(f"Request data: {data}")
 
     # Check if this is a challenge request
     if data and "challenge" in data:
@@ -286,8 +290,11 @@ def slack_events():
     # For any other type of request
     return jsonify({"status": "error", "message": "Invalid request"}), 400
 
+def simple(environ, start_response):
+    start_response('200 OK', [('Content-Type', 'text/plain')])
+    return [b'Hello WSGI World']
 
-app.wsgi_app = DispatcherMiddleware(slack_events, {'/hooks/slack-agent': app.wsgi_app})
+app.wsgi_app = DispatcherMiddleware(simple, {'/hooks/slack-agent': app.wsgi_app})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
