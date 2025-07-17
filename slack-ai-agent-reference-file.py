@@ -101,8 +101,8 @@ REFERENCE CONTENT:
 
         # Parse the JSON response
         response_data = response.json()
-        print(f"\nInitial Response:")
-        print(f"Content: {response_data}")
+        app.logger.info(f"\nInitial Response:")
+        app.logger.info(f"Content: {response_data}")
 
         # Check for tool calls in the response
         while response_data.get("stop_reason") == "tool_use":
@@ -134,8 +134,8 @@ REFERENCE CONTENT:
                 else:
                     tool_result = {"error": "Unknown tool"}
 
-                print(f"\nTool Result:")
-                print(json.dumps(tool_result, indent=2))
+                app.logger.info(f"\nTool Result:")
+                app.logger.info(json.dumps(tool_result, indent=2))
 
                 # Make follow-up API call with tool results
                 response = requests.post(
@@ -170,12 +170,12 @@ REFERENCE CONTENT:
 
         # Get the final response text from the content array
         final_response = response_data.get("content", [{}])[0].get("text", "")
-        print("final_response")
-        print(response_data)
+        app.logger.info("final_response")
+        app.logger.info(response_data)
         return final_response
 
     except Exception as e:
-        print(f"Error calling AI service: {e}")
+        app.logger.error(f"Error calling AI service: {e}")
         return "Sorry, I encountered an error processing your request."
 
 
