@@ -11,6 +11,7 @@ from tools import get_5xx_error_rate_over_last_1hr, get_latency_report_for_preor
 load_dotenv()
 
 app = Flask(__name__)
+app.config['APPLICATION_ROOT'] = '/hooks'
 
 # Path to the reference file
 REFERENCE_FILE_PATH = os.environ.get("REFERENCE_FILE_PATH", "knowledge_base.txt")
@@ -284,6 +285,7 @@ def slack_events():
     return jsonify({"status": "error", "message": "Invalid request"}), 400
 
 
+app.wsgi_app = DispatcherMiddleware(simple, {'/hooks': app.wsgi_app})
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
