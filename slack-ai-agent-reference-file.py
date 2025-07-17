@@ -4,8 +4,6 @@ import os
 import json
 import threading
 from dotenv import load_dotenv
-from werkzeug.serving import run_simple
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from tools import get_5xx_error_rate_over_last_1hr, get_latency_report_for_preorder_service
 
@@ -13,7 +11,7 @@ from tools import get_5xx_error_rate_over_last_1hr, get_latency_report_for_preor
 load_dotenv()
 
 app = Flask(__name__)
-app.config['APPLICATION_ROOT'] = '/hooks'
+app.config['APPLICATION_ROOT'] = '/hooks/slack'
 
 # Path to the reference file
 REFERENCE_FILE_PATH = os.environ.get("REFERENCE_FILE_PATH", "knowledge_base.txt")
@@ -218,7 +216,7 @@ def process_slash_command(data):
         )
 
 
-@app.route("/slack/ai-assistant", methods=["POST"])
+@app.route("/ai-assistant", methods=["POST"])
 def slack_ai_assistant():
     """Route that handles the Slack slash command"""
 
@@ -247,7 +245,7 @@ def refresh_reference():
     return jsonify({"status": "success", "message": "Reference content refreshed"})
 
 
-@app.route("/slack/events", methods=["POST"])
+@app.route("/events", methods=["POST"])
 def slack_events():
     # Get the JSON data from the request
     data = request.json
@@ -287,7 +285,6 @@ def slack_events():
     return jsonify({"status": "error", "message": "Invalid request"}), 400
 
 
-app.wsgi_app = DispatcherMiddleware(simple, {'/hooks': app.wsgi_app})
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
