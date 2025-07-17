@@ -181,7 +181,7 @@ REFERENCE CONTENT:
 
 def process_slash_command(data):
     """Process the slash command asynchronously"""
-    print(data)
+    app.logger.info(data)
     try:
         user_query = data.get("text", "").strip()
         channel = data.get("channel")
@@ -198,7 +198,7 @@ def process_slash_command(data):
             ai_response = get_ai_response(user_query)
             response_message = f"{ai_response}"
 
-        print(response_message)    
+        app.logger.info(response_message)
 
         # Send the response back to Slack
         requests.post(
@@ -206,7 +206,7 @@ def process_slash_command(data):
             json={"text": response_message, "channel": channel, "thread_ts": thread_ts},
         )
     except Exception as e:
-        print(f"Error processing slash command: {e}")
+        app.logger.error(f"Error processing slash command: {e}")
 
         # Send error message back to Slack
         requests.post(
