@@ -286,11 +286,8 @@ def slack_events():
     # For any other type of request
     return jsonify({"status": "error", "message": "Invalid request"}), 400
 
-def simple(environ, start_response):
-    start_response('200 OK', [('Content-Type', 'text/plain')])
-    return [b'Hello WSGI World']
 
-app.wsgi_app = DispatcherMiddleware(simple, {'/hooks/slack-agent': app.wsgi_app})
+app.wsgi_app = DispatcherMiddleware(slack_events, {'/hooks/slack-agent': app.wsgi_app})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
