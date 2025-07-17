@@ -4,6 +4,8 @@ import os
 import json
 import threading
 from dotenv import load_dotenv
+from werkzeug.serving import run_simple
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from tools import get_5xx_error_rate_over_last_1hr, get_latency_report_for_preorder_service
 
