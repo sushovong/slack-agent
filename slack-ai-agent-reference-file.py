@@ -186,7 +186,12 @@ def process_slash_command(data):
         user_query = data.get("text", "").strip()
         channel = data.get("channel")
         thread_ts = data.get("thread_ts")
-        response_url = data.get("response_url")
+        response_url = "https://hooks.slack.com/services/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"
+
+        # Validate required fields
+        if not response_url:
+            app.logger.error("No response_url provided in request data")
+            return
 
         if not user_query:
             # If no query is provided
@@ -208,14 +213,15 @@ def process_slash_command(data):
     except Exception as e:
         app.logger.error(f"Error processing slash command: {e}")
 
-        # Send error message back to Slack
-        requests.post(
-            response_url,
-            json={
-                "response_type": "ephemeral",
-                "text": "Sorry, something went wrong processing your request.",
-            },
-        )
+        # Send error message back to Slack only if response_url is available
+        if response_url:
+            requests.post(
+                response_url,
+                json={
+                    "response_type": "ephemeral",
+                    "text": "Sorry, something went wrong processing your request.",
+                },
+            )
 
 
 @app.route("/slack/ai-assistant", methods=["POST"])
