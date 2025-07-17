@@ -11,7 +11,7 @@ from tools import get_5xx_error_rate_over_last_1hr, get_latency_report_for_preor
 load_dotenv()
 
 app = Flask(__name__)
-app.config['APPLICATION_ROOT'] = '/hooks/slack'
+app.config['APPLICATION_ROOT'] = '/hooks/slack-agent'
 
 # Path to the reference file
 REFERENCE_FILE_PATH = os.environ.get("REFERENCE_FILE_PATH", "knowledge_base.txt")
@@ -216,7 +216,7 @@ def process_slash_command(data):
         )
 
 
-@app.route("/ai-assistant", methods=["POST"])
+@app.route("/slack/ai-assistant", methods=["POST"])
 def slack_ai_assistant():
     """Route that handles the Slack slash command"""
 
@@ -245,7 +245,7 @@ def refresh_reference():
     return jsonify({"status": "success", "message": "Reference content refreshed"})
 
 
-@app.route("/events", methods=["POST"])
+@app.route("/slack/events", methods=["POST"])
 def slack_events():
     # Get the JSON data from the request
     data = request.json
