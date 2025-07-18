@@ -8,12 +8,15 @@ from werkzeug.serving import run_simple
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from tools import get_5xx_error_rate_over_last_1hr, get_latency_report_for_preorder_service
+import logging
+logging.basicConfig(level=logging.INFO)
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/hooks/slack-agent'
+app.logger.setLevel(logging.INFO)
 
 # Path to the reference file
 REFERENCE_FILE_PATH = os.environ.get("REFERENCE_FILE_PATH", "knowledge_base.txt")
