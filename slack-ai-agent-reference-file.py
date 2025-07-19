@@ -14,6 +14,10 @@ logging.basicConfig(level=logging.INFO)
 # Load environment variables
 load_dotenv()
 
+# Disable Kubernetes auto-discovery to prevent memcache errors
+os.environ['KUBERNETES_SERVICE_HOST'] = ''
+os.environ['KUBERNETES_SERVICE_PORT'] = ''
+
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/hooks/slack-agent'
 app.logger.setLevel(logging.INFO)

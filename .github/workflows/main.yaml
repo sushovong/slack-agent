@@ -28,6 +28,8 @@ jobs:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       ADX_CLUSTER_URI: ${{ secrets.ADX_CLUSTER_URI }}
       ADX_API_ENDPOINT: ${{ secrets.ADX_API_ENDPOINT }}
+      KUBERNETES_SERVICE_HOST: ""
+      KUBERNETES_SERVICE_PORT: ""
     steps:
     - name: checkout
       uses: actions/checkout@v4
