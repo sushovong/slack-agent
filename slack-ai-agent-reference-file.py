@@ -18,28 +18,12 @@ logging.getLogger('urllib3.connectionpool').setLevel(logging.ERROR)
 # Load environment variables
 load_dotenv()
 
-# Disable Kubernetes auto-discovery to prevent memcache errors
-os.environ['KUBERNETES_SERVICE_HOST'] = ''
-os.environ['KUBERNETES_SERVICE_PORT'] = ''
-os.environ['KUBECONFIG'] = ''
-os.environ['KUBERNETES_NAMESPACE'] = ''
-
-# Disable Azure SDK auto-discovery
-os.environ['AZURE_CLIENT_ID'] = ''
-os.environ['AZURE_CLIENT_SECRET'] = ''
-os.environ['AZURE_TENANT_ID'] = ''
-
 app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/hooks/slack-agent'
 app.logger.setLevel(logging.INFO)
 
 # Log environment variable status at startup
 app.logger.info(f"ANTHROPIC_API_KEY available: {'YES' if os.environ.get('ANTHROPIC_API_KEY') else 'NO'}")
-app.logger.info(f"ADX_API_ENDPOINT available: {'YES' if os.environ.get('ADX_API_ENDPOINT') else 'NO'}")
-app.logger.info(f"SLACK_BOT_TOKEN available: {'YES' if os.environ.get('SLACK_BOT_TOKEN') else 'NO'}")
-app.logger.info(f"Kubernetes auto-discovery disabled: KUBERNETES_SERVICE_HOST='{os.environ.get('KUBERNETES_SERVICE_HOST')}'")
-app.logger.info(f"KUBECONFIG disabled: '{os.environ.get('KUBECONFIG')}'")
-app.logger.info(f"Azure auth disabled: AZURE_CLIENT_ID='{os.environ.get('AZURE_CLIENT_ID')}'")
 
 # Path to the reference file
 REFERENCE_FILE_PATH = os.environ.get("REFERENCE_FILE_PATH", "knowledge_base.txt")

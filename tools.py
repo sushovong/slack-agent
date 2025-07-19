@@ -17,7 +17,7 @@ def execute_adx_query(database: str, query: str):
         KustoResponseDataSet: The response from ADX containing the query results
     """
     # Get API endpoint from environment variable
-    api_endpoint = os.getenv('ADX_API_ENDPOINT')
+    api_endpoint = os.environ.get('ADX_API_ENDPOINT')
     if not api_endpoint:
         raise ValueError("ADX_API_ENDPOINT environment variable not set")
     
