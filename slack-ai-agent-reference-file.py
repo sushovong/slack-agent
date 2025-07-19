@@ -86,8 +86,6 @@ REFERENCE CONTENT:
             }
         ]
 
-        key = os.environ.get("ANTHROPIC_API_KEY")
-        app.logger.info(f"\nkey: {key}")
         # Make the API call to Anthropic
         response = requests.post(
             "https://api.anthropic.com/v1/messages",
