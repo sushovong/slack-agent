@@ -11,10 +11,6 @@ from tools import get_5xx_error_rate_over_last_1hr, get_latency_report_for_preor
 import logging
 logging.basicConfig(level=logging.INFO)
 
-# Suppress Kubernetes client library errors
-logging.getLogger('kubernetes').setLevel(logging.ERROR)
-logging.getLogger('urllib3.connectionpool').setLevel(logging.ERROR)
-
 # Load environment variables
 load_dotenv()
 
@@ -24,6 +20,8 @@ app.logger.setLevel(logging.INFO)
 
 # Log environment variable status at startup
 app.logger.info(f"ANTHROPIC_API_KEY available: {'YES' if os.environ.get('ANTHROPIC_API_KEY') else 'NO'}")
+app.logger.info(f"ADX_API_ENDPOINT available: {'YES' if os.environ.get('ADX_API_ENDPOINT') else 'NO'}")
+app.logger.info(f"SLACK_BOT_TOKEN available: {'YES' if os.environ.get('SLACK_BOT_TOKEN') else 'NO'}")
 
 # Path to the reference file
 REFERENCE_FILE_PATH = os.environ.get("REFERENCE_FILE_PATH", "knowledge_base.txt")
