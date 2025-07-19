@@ -37,6 +37,9 @@ app.logger.setLevel(logging.INFO)
 app.logger.info(f"ANTHROPIC_API_KEY available: {'YES' if os.environ.get('ANTHROPIC_API_KEY') else 'NO'}")
 app.logger.info(f"ADX_API_ENDPOINT available: {'YES' if os.environ.get('ADX_API_ENDPOINT') else 'NO'}")
 app.logger.info(f"SLACK_BOT_TOKEN available: {'YES' if os.environ.get('SLACK_BOT_TOKEN') else 'NO'}")
+app.logger.info(f"Kubernetes auto-discovery disabled: KUBERNETES_SERVICE_HOST='{os.environ.get('KUBERNETES_SERVICE_HOST')}'")
+app.logger.info(f"KUBECONFIG disabled: '{os.environ.get('KUBECONFIG')}'")
+app.logger.info(f"Azure auth disabled: AZURE_CLIENT_ID='{os.environ.get('AZURE_CLIENT_ID')}'")
 
 # Path to the reference file
 REFERENCE_FILE_PATH = os.environ.get("REFERENCE_FILE_PATH", "knowledge_base.txt")
