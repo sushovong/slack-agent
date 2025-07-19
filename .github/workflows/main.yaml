@@ -20,6 +20,14 @@ jobs:
     env:
       BUILDAH_FORMAT: docker
       BUILD_TYPE: docker
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      NOTION_KEY: ${{ secrets.NOTION_KEY }}
+      NOTION_PAGE_ID: ${{ secrets.NOTION_PAGE_ID }}
+      REFERENCE_FILE_PATH: ${{ secrets.REFERENCE_FILE_PATH }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      ADX_CLUSTER_URI: ${{ secrets.ADX_CLUSTER_URI }}
+      ADX_API_ENDPOINT: ${{ secrets.ADX_API_ENDPOINT }}
     steps:
     - name: checkout
       uses: actions/checkout@v4
@@ -28,16 +36,7 @@ jobs:
 
     - name: Setup environment variables
       run: |
-        echo "setting up environment variables"
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }};
-        NOTION_KEY: ${{ secrets.NOTION_KEY }};
-        NOTION_PAGE_ID: ${{ secrets.NOTION_PAGE_ID }};
-        REFERENCE_FILE_PATH: ${{ secrets.REFERENCE_FILE_PATH }};
-        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }};
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }};
-        ADX_CLUSTER_URI: ${{ secrets.ADX_CLUSTER_URI }};
-        ADX_API_ENDPOINT: ${{ secrets.ADX_API_ENDPOINT }};
+        echo "Environment variables configured at job level"
 
     - id: flags
       name: setup flags
@@ -55,7 +54,10 @@ jobs:
       if: ${{ !steps.flags.outputs.no_build }}
       env:
         BUILDCTL_DEBUG: 'true'
-      run: buildctl image
+      run: |
+        echo "Building with environment variables:"
+        echo "ANTHROPIC_API_KEY exists: $([[ -n "$ANTHROPIC_API_KEY" ]] && echo "YES" || echo "NO")"
+        buildctl image
 
     - name: deploy image (prod)
       if: ${{ steps.flags.outputs.d2p }}

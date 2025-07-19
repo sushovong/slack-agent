@@ -18,6 +18,11 @@ app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/hooks/slack-agent'
 app.logger.setLevel(logging.INFO)
 
+# Log environment variable status at startup
+app.logger.info(f"ANTHROPIC_API_KEY available: {'YES' if os.environ.get('ANTHROPIC_API_KEY') else 'NO'}")
+app.logger.info(f"ADX_API_ENDPOINT available: {'YES' if os.environ.get('ADX_API_ENDPOINT') else 'NO'}")
+app.logger.info(f"SLACK_BOT_TOKEN available: {'YES' if os.environ.get('SLACK_BOT_TOKEN') else 'NO'}")
+
 # Path to the reference file
 REFERENCE_FILE_PATH = os.environ.get("REFERENCE_FILE_PATH", "knowledge_base.txt")
 
