@@ -10,3 +10,7 @@ kubernetes:
   cpus: 0.1
   mem: 256
   healthcheck: "none"
+  containerSpec:
+    envFrom:
+      - secretRef:
+          name: slack-agent
