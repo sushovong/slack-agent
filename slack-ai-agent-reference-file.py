@@ -194,7 +194,7 @@ def process_slash_command(data):
         user_query = data.get("text", "").strip()
         channel = data.get("channel")
         thread_ts = data.get("thread_ts")
-        response_url = "https://hooks.slack.com/services/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"
+        response_url = data.get("response_url")
 
         # Validate required fields
         if not response_url:
@@ -292,7 +292,7 @@ def slack_events():
             "text": "can you please explain what this alert means? {}".format(
                 message_text
             ),
-            "response_url": "https://hooks.slack.com/services/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",
+            "response_url": os.environ.get("SLACK_RESPONSE_URL"),
         }
 
         # Process the command asynchronously
