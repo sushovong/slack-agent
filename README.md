@@ -2,6 +2,9 @@
 
 A Flask-based Slack assistant that uses Anthropic Claude to explain alerts and investigate service health through custom query tools.
 
+<img width="872" height="793" alt="Screenshot 2026-09-07 at 23 16 01" src="https://github.com/user-attachments/assets/adefd4da-635c-4a02-8961-78f4ef4098ef" />
+
+
 ## Features
 
 - Handles Slack slash commands and Events API requests.
